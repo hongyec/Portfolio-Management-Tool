@@ -28,4 +28,10 @@ public class TickerServiceImpl implements TickerService{
         Optional<Ticker> ticker = tickerDao.findById(id);
         return ticker.orElse(null);
     }
+
+    @Transactional
+    @Override
+    public Collection<Ticker> selectTickers() {
+        return tickerDao.findAll();
+    }
 }

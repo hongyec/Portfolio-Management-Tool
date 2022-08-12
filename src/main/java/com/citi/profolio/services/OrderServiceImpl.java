@@ -19,7 +19,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderDao orderDao;
 
-    TickerService tickerService = new TickerServiceImpl();
+    @Autowired
+    TickerService tickerService;
+
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
@@ -30,11 +32,22 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.findAll();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Order selectOrderById(Integer id){
+        logger.info("Selecting all orders");
+        return orderDao.findById(id).orElse(null);
+    }
+
+
+
+
     @Override
     public Order createOrder(Order order){
-        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null)
+        if (order == null || tickerService.selectTickerById(1) == null)
             return null;
         logger.info("Adding order:{}", order.toString());
+
         return orderDao.save(order);
     }
 }

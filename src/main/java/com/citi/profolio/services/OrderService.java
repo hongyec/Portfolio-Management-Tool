@@ -10,5 +10,7 @@ public interface OrderService {
 
     Collection<Order> selectOrder();
 
+    Order selectOrderById(Integer id);
+
 
 }

@@ -1,0 +1,14 @@
+POST http://localhost:8080/orders
+Content-type: application/json
+
+{
+  "createdDate": "2022-08-12T15:22:16.000+00:00",
+  "completedDate": "2022-08-12T15:22:16.000+00:00",
+  "marketPrice": 300.00,
+  "goodTill": "2022-08-12T15:22:16.000+00:00",
+  "priceType": "marketOrder",
+  "action": "buy",
+  "status": "open",
+  "tickerId": 5
+}
+
