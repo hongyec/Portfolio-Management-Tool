@@ -1,6 +1,6 @@
 package com.citi.profolio.services;
 
-import com.citi.profolio.daos.OrderDao;
+import com.citi.profolio.daos.TickerDao;
 import com.citi.profolio.entities.Order;
 import com.citi.profolio.entities.Ticker;
 import org.apache.logging.log4j.LogManager;
@@ -10,31 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
-public class OrderServiceImpl implements OrderService {
+public class TickerServiceImpl implements TickerService{
 
     @Autowired
-    OrderDao orderDao;
-
-    TickerService tickerService = new TickerServiceImpl();
+    TickerDao tickerDao;
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public Collection<Order> selectOrder(){
-        logger.info("Selecting all orders");
-        return orderDao.findAll();
-    }
-
-    @Override
-    public Order createOrder(Order order){
-        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null)
-            return null;
-        logger.info("Adding order:{}", order.toString());
-        return orderDao.save(order);
+    public Ticker selectTickerById(Integer id) {
+        logger.info("Selecting ticker by id:{}", id);
+        Optional<Ticker> ticker = tickerDao.findById(id);
+        return ticker.orElse(null);
     }
 }
