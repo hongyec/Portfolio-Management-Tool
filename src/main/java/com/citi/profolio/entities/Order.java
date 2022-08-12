@@ -7,26 +7,26 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Order")
+@Table(name = "orders")
 public class Order implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-    @Column(name="createdDate")
+    @Column(name="createddate")
     private Date createdDate;
 
-    @Column(name="completedDate")
+    @Column(name="completeddate")
     private Date completedDate;
 
-    @Column(name="marketPrice")
+    @Column(name="marketprice")
     private Double marketPrice;
 
-    @Column(name="goodTill")
+    @Column(name="goodtill")
     private Date goodTill;
 
-    @Column(name="priceType")
+    @Column(name="pricetype")
     private String priceType;
 
     @Column(name="action")
@@ -35,7 +35,7 @@ public class Order implements Serializable {
     @Column(name="status")
     private String status;
 
-    @Column(name="tickerId")
+    @Column(name="tickerid")
     private Integer tickerId;
 
 
