@@ -1,8 +1,5 @@
 # Portfolio-Management-Tool
 
-
-# MicroService Portfolio Management Project
-
 ## Overview
 
 In the continuation of this project you will use the REST API created in week 1 as the core of an application that will manage a portfolio of assets for a single user.
