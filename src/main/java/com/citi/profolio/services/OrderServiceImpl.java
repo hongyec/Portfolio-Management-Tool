@@ -1,7 +1,7 @@
 package com.citi.profolio.services;
 
-import com.citi.profolio.daos.TradeDao;
-import com.citi.profolio.entities.Trade;
+import com.citi.profolio.daos.OrderDao;
+import com.citi.profolio.entities.Order;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +13,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
-public class TradeServiceImpl implements TradeService{
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    TradeDao tradeDao;
+    OrderDao orderDao;
 
-    private static final Logger logger = LogManager.getLogger(TradeServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public Collection<Trade> selectOrder(){
-        return new ArrayList<>();
+    public Collection<Order> selectOrder(){
+        logger.info("Selecting all orders");
+        return orderDao.findAll();
     }
 
     @Override
-    public int createOrder(Trade trade){
-        return 0;
+    public Order createOrder(Order order){
+        logger.info("Adding order:{}", order.toString());
+        return orderDao.save(order);
     }
 }
