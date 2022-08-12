@@ -18,6 +18,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderDao orderDao;
 
+//    @Autowired
+//    TickerDao tikerDao;
+
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -29,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order){
+//        if (order == null || tikerDao.findById(order.getTickerId()) == null) return null;
         logger.info("Adding order:{}", order.toString());
         return orderDao.save(order);
     }
