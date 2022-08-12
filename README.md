@@ -166,3 +166,14 @@ Some of these may be useful depending on the features you choose to put in your 
     * Takes a single parameter `ticker` : a valid stock ticker
 
     * [Endpoint URL](https://qz4sxjl623.execute-api.us-east-1.amazonaws.com/default/tradeAdvisor?ticker=NFLX)
+
+
+4. Git Intructions:
+   1. git remote add orgin '''url'''
+   2. git checkout -b sang/editFile
+   3. edit file
+   4. git add .
+   5. git commit -m "message" --no-verify
+   6. git push(not work) --set-upstream orign main
+   7. git push
+   8. create pull request
