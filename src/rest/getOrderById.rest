@@ -1,2 +1,2 @@
-GET http://localhost:8080/orders/1
+GET http://localhost:8080/orders/2
 Content-type: application/json
