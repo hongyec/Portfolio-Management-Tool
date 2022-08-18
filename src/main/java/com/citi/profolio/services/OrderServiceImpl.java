@@ -67,6 +67,10 @@ public class OrderServiceImpl implements OrderService {
     }
     @Override
     public Collection<Order> selectOrderByStatus(String status){
-        return new ArrayList<>();
+        if (StatusEnum.valueOfStatus(status) == null){
+            logger.warn("Invalid Status");
+            return null;
+        }
+        return orderDao.getOrdersByStatus(status);
     }
 }
