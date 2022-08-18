@@ -11,6 +11,6 @@ import java.util.Collection;
 
 @Repository
 public interface OrderDao extends JpaRepository<Order, Integer> {
-    @Query("SELECT * FROM orders o WHERE o.status = :status")
+    @Query(value = "SELECT o FROM Order o WHERE o.status = :status")
     public Collection<Order> getOrdersByStatus(@Param("status") String status);
 }

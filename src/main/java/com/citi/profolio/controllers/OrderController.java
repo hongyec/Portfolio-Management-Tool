@@ -28,4 +28,9 @@ public class OrderController {
     public Order selectOrderById(@PathVariable("id") Integer id) {
         return orderService.selectOrderById(id);
     }
+
+    @GetMapping(value = "/{status}")
+    public Collection<Order> selectOrdersByStatus(@PathVariable("status") String status) {
+        return orderService.selectOrderByStatus(status);
+    }
 }
