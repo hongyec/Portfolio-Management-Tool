@@ -1,7 +1,9 @@
 package com.citi.profolio.services;
 
 import com.citi.profolio.daos.OrderDao;
+import com.citi.profolio.entities.ActionEnum;
 import com.citi.profolio.entities.Order;
+import com.citi.profolio.entities.StatusEnum;
 import com.citi.profolio.entities.Ticker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,14 +42,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
-
     @Override
     public Order createOrder(Order order){
-        if (order == null || tickerService.selectTickerById(1) == null)
+        if (order == null || tickerService.selectTickerById(order.getId()) == null)
             return null;
+        if (orderCanComplete(order)){
+            order.setStatus(StatusEnum.COMPLETED.getStatus());
+        } else{
+            order.setStatus(StatusEnum.OPEN.getStatus());
+        }
         logger.info("Adding order:{}", order.toString());
 
         return orderDao.save(order);
+    }
+
+    private boolean orderCanComplete(Order order){
+        Ticker ticker = tickerService.selectTickerById(order.getId());
+        String action = order.getAction();
+        if (action.equals(ActionEnum.BUY.getAction())){
+            return order.getMarketPrice() >= ticker.getPrice();
+        } else{
+            return order.getMarketPrice() <= ticker.getPrice();
+        }
+    }
+    @Override
+    public Collection<Order> selectOrderByStatus(String status){
+        return new ArrayList<>();
     }
 }
