@@ -38,12 +38,15 @@ public class Order implements Serializable {
     @Column(name="tickerid")
     private Integer tickerId;
 
+    @Column(name="numshares")
+    private Integer numShares;
 
     public Order() {
 
     }
 
-    public Order(Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer tickerId) {
+    public Order(int id, Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer tickerId, Integer numShares) {
+        this.id = id;
         this.createdDate = createdDate;
         this.completedDate = completedDate;
         this.marketPrice = marketPrice;
@@ -52,8 +55,8 @@ public class Order implements Serializable {
         this.action = action;
         this.status = status;
         this.tickerId = tickerId;
+        this.numShares = numShares;
     }
-
 
     public int getId() {
         return id;
@@ -125,6 +128,14 @@ public class Order implements Serializable {
 
     public void setTickerId(Integer tickerId) {
         this.tickerId = tickerId;
+    }
+
+    public Integer getNumShares() {
+        return numShares;
+    }
+
+    public void setNumShares(Integer numShares) {
+        this.numShares = numShares;
     }
 
     @Override

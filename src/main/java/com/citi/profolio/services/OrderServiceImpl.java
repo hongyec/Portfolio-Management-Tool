@@ -1,10 +1,7 @@
 package com.citi.profolio.services;
 
 import com.citi.profolio.daos.OrderDao;
-import com.citi.profolio.entities.ActionEnum;
-import com.citi.profolio.entities.Order;
-import com.citi.profolio.entities.StatusEnum;
-import com.citi.profolio.entities.Ticker;
+import com.citi.profolio.entities.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -27,6 +22,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     TickerService tickerService;
 
+    @Autowired
+    PortfolioService portfolioService;
 
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
@@ -40,15 +37,19 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public Order selectOrderById(Integer id){
-        logger.info("Selecting all orders");
+        logger.info("Selecting order by id:{}", id);
         return orderDao.findById(id).orElse(null);
     }
 
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Order createOrder(Order order){
-        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null)
+        //Check if the order and the ticker exist,
+        //and if the user has shares to sell.
+        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null || !ableToSell(order))
             return null;
+
         Date today = new Date(System.currentTimeMillis());
         //Set order created date.
         if (order.getCreatedDate() == null) order.setCreatedDate(today);
@@ -58,11 +59,12 @@ public class OrderServiceImpl implements OrderService {
         if (orderCanComplete(order)){
             order.setCompletedDate(new Date(System.currentTimeMillis()));
             order.setStatus(StatusEnum.COMPLETED.getStatus());
+            //Update Number of Shares in Portfolio
+            portfolioService.updateShareNum(order);
         } else{
             order.setStatus(StatusEnum.OPEN.getStatus());
         }
         logger.info("Adding order:{}", order.toString());
-
         return orderDao.save(order);
     }
 
@@ -89,5 +91,15 @@ public class OrderServiceImpl implements OrderService {
             return null;
         }
         return orderDao.getOrdersByStatus(status);
+    }
+
+    private boolean ableToSell(Order order){
+        Portfolio portfolio = portfolioService.selectPortfolioByTicker(order.getTickerId());
+        if (order.getAction().equals(ActionEnum.SELL.getAction())
+                && (portfolio == null || portfolio.getNumShare() - order.getNumShares() < 0)) {
+            logger.warn("Unable to sell");
+            return false;
+        }
+        return true;
     }
 }

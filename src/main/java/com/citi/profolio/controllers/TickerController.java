@@ -18,7 +18,7 @@ public class TickerController {
     TickerService tickerService;
 
     @GetMapping(value = "/{id}")
-    public Ticker selectTickerByid(@PathVariable Integer id) {
+    public Ticker selectTickerById(@PathVariable Integer id) {
         return tickerService.selectTickerById(id);
     }
 
