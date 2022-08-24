@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -44,9 +47,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Order order){
-        if (order == null || tickerService.selectTickerById(order.getId()) == null)
+        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null)
             return null;
+        Date today = new Date(System.currentTimeMillis());
+        //Set order created date.
+        if (order.getCreatedDate() == null) order.setCreatedDate(today);
+        //Set order good till.
+        setGoodTill(order, today);
+        //Check whether the order can be completed.
         if (orderCanComplete(order)){
+            order.setCompletedDate(new Date(System.currentTimeMillis()));
             order.setStatus(StatusEnum.COMPLETED.getStatus());
         } else{
             order.setStatus(StatusEnum.OPEN.getStatus());
@@ -56,8 +66,15 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.save(order);
     }
 
+    private void setGoodTill(Order order, Date date){
+        if (order.getCreatedDate() == null) order.setCreatedDate(date);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MONTH, 3);
+        order.setGoodTill(cal.getTime());
+    }
     private boolean orderCanComplete(Order order){
-        Ticker ticker = tickerService.selectTickerById(order.getId());
+        Ticker ticker = tickerService.selectTickerById(order.getTickerId());
         String action = order.getAction();
         if (action.equals(ActionEnum.BUY.getAction())){
             return order.getMarketPrice() >= ticker.getPrice();

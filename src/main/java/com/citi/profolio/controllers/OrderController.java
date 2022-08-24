@@ -29,7 +29,7 @@ public class OrderController {
         return orderService.selectOrderById(id);
     }
 
-    @GetMapping(value = "/{status}")
+    @GetMapping(value = "/get{status}")
     public Collection<Order> selectOrdersByStatus(@PathVariable("status") String status) {
         return orderService.selectOrderByStatus(status);
     }
