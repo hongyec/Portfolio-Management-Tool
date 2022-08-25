@@ -148,7 +148,7 @@ public class Order implements Serializable {
                 ", priceType='" + priceType + '\'' +
                 ", action='" + action + '\'' +
                 ", status='" + status + '\'' +
-                ", number of shares='" + numOfshares + '\''+
+                ", number of shares='" + numShares + '\''+
                 ", tickerId=" + tickerId +
                 '}';
     }
@@ -158,11 +158,11 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && numOfshares.equals(order.numOfshares) && tickerId.equals(order.tickerId);
+        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && numOfshares.equals(order.numShares) && tickerId.equals(order.tickerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, numOfshares, tickerId);
+        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, numShares, tickerId);
     }
 }
