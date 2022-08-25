@@ -45,8 +45,7 @@ public class Order implements Serializable {
 
     }
 
-    public Order(int id, Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer tickerId, Integer numShare) {
-        this.id = id;
+    public Order(Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer numShare, Integer tickerId) {
         this.createdDate = createdDate;
         this.completedDate = completedDate;
         this.marketPrice = marketPrice;
@@ -54,9 +53,10 @@ public class Order implements Serializable {
         this.priceType = priceType;
         this.action = action;
         this.status = status;
-        this.tickerId = tickerId;
         this.numShare = numShare;
+        this.tickerId = tickerId;
     }
+
 
     public int getId() {
         return id;
@@ -122,20 +122,20 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    public Integer getNumShare(){
+        return numShare;
+    }
+
+    public void setNumShare(Integer numShare){
+        this.numShare = numShare;
+    }
+
     public Integer getTickerId() {
         return tickerId;
     }
 
     public void setTickerId(Integer tickerId) {
         this.tickerId = tickerId;
-    }
-
-    public Integer getNumShare() {
-        return numShare;
-    }
-
-    public void setNumShare(Integer numShares) {
-        this.numShare = numShares;
     }
 
     @Override
@@ -149,8 +149,8 @@ public class Order implements Serializable {
                 ", priceType='" + priceType + '\'' +
                 ", action='" + action + '\'' +
                 ", status='" + status + '\'' +
+                ", number of shares='" + numShare + '\''+
                 ", tickerId=" + tickerId +
-                ", numShare=" + numShare +
                 '}';
     }
 
@@ -159,11 +159,11 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && Objects.equals(createdDate, order.createdDate) && Objects.equals(completedDate, order.completedDate) && Objects.equals(marketPrice, order.marketPrice) && Objects.equals(goodTill, order.goodTill) && Objects.equals(priceType, order.priceType) && Objects.equals(action, order.action) && Objects.equals(status, order.status) && Objects.equals(tickerId, order.tickerId) && Objects.equals(numShare, order.numShare);
+        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && numShare.equals(order.numShare) && tickerId.equals(order.tickerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, tickerId, numShare);
+        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, numShare, tickerId);
     }
 }
