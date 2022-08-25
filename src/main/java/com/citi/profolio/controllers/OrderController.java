@@ -10,6 +10,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/orders")
+@CrossOrigin
 public class OrderController {
     @Autowired
     OrderService orderService;
