@@ -1,8 +1,8 @@
 package com.citi.profolio.services;
 
-import com.citi.profolio.daos.TickerDao;
-import com.citi.profolio.entities.Order;
-import com.citi.profolio.entities.Ticker;
+import java.util.Collection;
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Optional;
+import com.citi.profolio.daos.TickerDao;
+import com.citi.profolio.entities.Ticker;
 
 @Service
 public class TickerServiceImpl implements TickerService{
