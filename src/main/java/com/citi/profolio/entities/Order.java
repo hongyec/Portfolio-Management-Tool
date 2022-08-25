@@ -41,7 +41,6 @@ public class Order implements Serializable {
     @Column(name="numshare")
     private Integer numShare;
 
-
     public Order() {
 
     }

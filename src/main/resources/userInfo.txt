@@ -1,0 +1,2 @@
+username:user
+balance:10000.00
