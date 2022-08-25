@@ -9,5 +9,6 @@ Content-type: application/json
   "priceType": "marketOrder",
   "action": "buy",
   "status": "open",
-  "tickerId": 100
+  "tickerId": 100,
+  "numShare": 5
 }
