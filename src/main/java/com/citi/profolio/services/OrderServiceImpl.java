@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -115,5 +116,20 @@ public class OrderServiceImpl implements OrderService {
 
     private boolean ableToBuy(Order order, Double balance, Double total){
         return !order.getAction().equals(ActionEnum.SELL.getAction()) || (!(balance - total >= 0));
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Collection<Order> updateOrderStatus(){
+        Date today = new Date(System.currentTimeMillis());
+        Collection<Order> openOrders = orderDao.getOrdersByStatus(StatusEnum.OPEN.getStatus());
+        Collection<Order> closeOrders = new ArrayList<>();
+        for (Order order : openOrders){
+            if (order.getGoodTill().before(today)) {
+                closeOrders.add(order);
+                orderDao.updateOrdersStatus(StatusEnum.CLOSE.getStatus(), order.getId());
+            }
+        }
+        return closeOrders;
     }
 }

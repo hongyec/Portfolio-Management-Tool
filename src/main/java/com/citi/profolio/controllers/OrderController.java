@@ -39,4 +39,7 @@ public class OrderController {
     public Collection<Order> selectOrdersByStatus(@PathVariable("status") String status) {
         return orderService.selectOrderByStatus(status);
     }
+
+    @GetMapping(value="/updateStatus")
+    public Collection<Order> updateOrderStatus(){return orderService.updateOrderStatus();}
 }

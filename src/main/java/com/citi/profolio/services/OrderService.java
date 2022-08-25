@@ -14,5 +14,7 @@ public interface OrderService {
 
     Collection<Order> selectOrderByStatus(String status);
 
+    Collection<Order> updateOrderStatus();
+
 
 }
