@@ -122,11 +122,13 @@ public class Order implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    public Integer getNumShares(){
-        return numShares;
+
+    public Integer getNumShare(){
+        return numShare;
     }
-    public void setNumShares(Integer numShares){
-        this.numShares = numShares;
+
+    public void setNumShare(Integer numShare){
+        this.numShare = numShare;
     }
 
     public Integer getTickerId() {
@@ -148,7 +150,7 @@ public class Order implements Serializable {
                 ", priceType='" + priceType + '\'' +
                 ", action='" + action + '\'' +
                 ", status='" + status + '\'' +
-                ", number of shares='" + numShares + '\''+
+                ", number of shares='" + numShare + '\''+
                 ", tickerId=" + tickerId +
                 '}';
     }
@@ -158,11 +160,11 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && numOfshares.equals(order.numShares) && tickerId.equals(order.tickerId);
+        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && numShare.equals(order.numShare) && tickerId.equals(order.tickerId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, numShares, tickerId);
+        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, numShare, tickerId);
     }
 }
