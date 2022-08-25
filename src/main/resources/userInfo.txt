@@ -1,2 +1,3 @@
 username:user
 balance:10000.00
+inital:10000.00

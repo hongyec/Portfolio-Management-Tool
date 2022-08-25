@@ -1,6 +1,8 @@
 package com.citi.profolio.services;
 
 
+import com.citi.profolio.entities.Portfolio;
+import com.citi.profolio.entities.Ticker;
 import com.citi.profolio.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -21,6 +24,11 @@ public class UserServiceImpl implements UserService{
     @Autowired
     ResourceLoader resourceLoader;
 
+    @Autowired
+    PortfolioService portfolioService;
+
+    @Autowired
+    TickerService tickerService;
 
     @Override
     public User getUserInfo() {
@@ -30,8 +38,10 @@ public class UserServiceImpl implements UserService{
         {
             String[] s = data.split("\n");
             String username = s[0].split(":")[1].strip();
-            String balance = s[1].split(":")[1].strip();
-            return new User(username, Double.valueOf(balance), 0d);
+            Double balance = Double.valueOf(s[1].split(":")[1].strip());
+            Double initial = Double.valueOf(s[2].split(":")[1].strip());
+            Double overallGrowth = calculateOverallGrowth(balance, initial);
+            return new User(username, balance, overallGrowth);
         } catch (NumberFormatException e) {
             LOGGER.error("Cannot Convert String into Float");
             return null;
@@ -61,4 +71,15 @@ public class UserServiceImpl implements UserService{
             return null;
         }
     }
+
+    public double calculateOverallGrowth(Double balance, Double initial){
+        double overall = 0;
+        Collection<Portfolio> portfolios = portfolioService.selectAllShares();
+        for (Portfolio p : portfolios){
+            Ticker ticker = tickerService.selectTickerById(p.getTickerId());
+            overall += ticker.getPrice() * p.getNumShare();
+        }
+        return overall + balance - initial;
+    }
+
 }
