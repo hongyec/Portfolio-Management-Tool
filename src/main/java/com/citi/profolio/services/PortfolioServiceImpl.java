@@ -32,12 +32,12 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         if (order.getAction().equals(ActionEnum.BUY.getAction())){
             if (selectPortfolioByTicker(tickerId) == null) {
-                createPortfolio(tickerId, order.getNumShares());
+                createPortfolio(tickerId, order.getNumShare());
             } else {
-                portfolioDao.increaseNumShare(tickerId, order.getNumShares());
+                portfolioDao.increaseNumShare(tickerId, order.getNumShare());
             }
         } else {
-            portfolioDao.decreaseNumShare(tickerId, order.getNumShares());
+            portfolioDao.decreaseNumShare(tickerId, order.getNumShare());
         }
     }
 

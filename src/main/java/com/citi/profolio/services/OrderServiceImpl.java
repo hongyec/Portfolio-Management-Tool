@@ -25,6 +25,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     PortfolioService portfolioService;
 
+    @Autowired
+    UserService userService;
+
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -45,10 +48,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public Order createOrder(Order order){
+
         //Check if the order and the ticker exist,
-        //and if the user has shares to sell.
-        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null || !ableToSell(order))
-            return null;
+        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null) return null;
+
+        Double balance = userService.getUserBalance();
+        Double totalPrice = order.getNumShare() * order.getMarketPrice();
+        //Check if user can buy or sell
+        if (!ableToBuy(order,balance, totalPrice)|| !ableToSell(order)) return null;
 
         Date today = new Date(System.currentTimeMillis());
         //Set order created date.
@@ -61,6 +68,9 @@ public class OrderServiceImpl implements OrderService {
             order.setStatus(StatusEnum.COMPLETED.getStatus());
             //Update Number of Shares in Portfolio
             portfolioService.updateShareNum(order);
+
+            //TODO:update user balance
+
         } else{
             order.setStatus(StatusEnum.OPEN.getStatus());
         }
@@ -96,10 +106,14 @@ public class OrderServiceImpl implements OrderService {
     private boolean ableToSell(Order order){
         Portfolio portfolio = portfolioService.selectPortfolioByTicker(order.getTickerId());
         if (order.getAction().equals(ActionEnum.SELL.getAction())
-                && (portfolio == null || portfolio.getNumShare() - order.getNumShares() < 0)) {
+                && (portfolio == null || portfolio.getNumShare() - order.getNumShare() < 0)) {
             logger.warn("Unable to sell");
             return false;
         }
         return true;
+    }
+
+    private boolean ableToBuy(Order order, Double balance, Double total){
+        return !order.getAction().equals(ActionEnum.SELL.getAction()) || (!(balance - total >= 0));
     }
 }

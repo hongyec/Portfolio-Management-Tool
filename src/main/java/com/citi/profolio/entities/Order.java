@@ -38,14 +38,14 @@ public class Order implements Serializable {
     @Column(name="tickerid")
     private Integer tickerId;
 
-    @Column(name="numshares")
-    private Integer numShares;
+    @Column(name="numshare")
+    private Integer numShare;
 
     public Order() {
 
     }
 
-    public Order(int id, Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer tickerId, Integer numShares) {
+    public Order(int id, Date createdDate, Date completedDate, Double marketPrice, Date goodTill, String priceType, String action, String status, Integer tickerId, Integer numShare) {
         this.id = id;
         this.createdDate = createdDate;
         this.completedDate = completedDate;
@@ -55,7 +55,7 @@ public class Order implements Serializable {
         this.action = action;
         this.status = status;
         this.tickerId = tickerId;
-        this.numShares = numShares;
+        this.numShare = numShare;
     }
 
     public int getId() {
@@ -130,12 +130,12 @@ public class Order implements Serializable {
         this.tickerId = tickerId;
     }
 
-    public Integer getNumShares() {
-        return numShares;
+    public Integer getNumShare() {
+        return numShare;
     }
 
-    public void setNumShares(Integer numShares) {
-        this.numShares = numShares;
+    public void setNumShare(Integer numShares) {
+        this.numShare = numShares;
     }
 
     @Override
@@ -150,6 +150,7 @@ public class Order implements Serializable {
                 ", action='" + action + '\'' +
                 ", status='" + status + '\'' +
                 ", tickerId=" + tickerId +
+                ", numShare=" + numShare +
                 '}';
     }
 
@@ -158,11 +159,11 @@ public class Order implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return id == order.id && createdDate.equals(order.createdDate) && Objects.equals(completedDate, order.completedDate) && marketPrice.equals(order.marketPrice) && goodTill.equals(order.goodTill) && priceType.equals(order.priceType) && action.equals(order.action) && status.equals(order.status) && tickerId.equals(order.tickerId);
+        return id == order.id && Objects.equals(createdDate, order.createdDate) && Objects.equals(completedDate, order.completedDate) && Objects.equals(marketPrice, order.marketPrice) && Objects.equals(goodTill, order.goodTill) && Objects.equals(priceType, order.priceType) && Objects.equals(action, order.action) && Objects.equals(status, order.status) && Objects.equals(tickerId, order.tickerId) && Objects.equals(numShare, order.numShare);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, tickerId);
+        return Objects.hash(id, createdDate, completedDate, marketPrice, goodTill, priceType, action, status, tickerId, numShare);
     }
 }
