@@ -15,6 +15,8 @@ import java.util.Collection;
 @RequestMapping("/orders")
 @CrossOrigin
 public class OrderController {
+
+
     @Autowired
     OrderService orderService;
 
@@ -27,6 +29,7 @@ public class OrderController {
 
     @PostMapping
     public Order createOrder(@RequestBody Order order) {
+        logger.info("Creating order"+order.toString());
         return orderService.createOrder(order);
     }
 

@@ -84,7 +84,7 @@ VALUES (6, " Coinbase Global Inc", "COIN", 72.17, "EST");
 
 
 
-use tradedb;
+use TradeDB;
 
 insert into orders (completedDate,createdDate, numShare, marketPrice, goodTill, priceType, action, status, tickerId) 
 values (now(),now(), 5, 163.00, now(), "marketOrder", "buy", "open", 1);
