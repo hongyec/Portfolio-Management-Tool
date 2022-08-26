@@ -42,7 +42,7 @@ public class OrderController {
                 : new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @GetMapping(value = "?status={status}")
+    @GetMapping(value = "/status={status}")
     public ResponseEntity<Collection<Order>> selectOrdersByStatus(@PathVariable("status") String status) {
         if (StatusEnum.valueOfStatus(status) == null){
             logger.warn("Invalid Status");
