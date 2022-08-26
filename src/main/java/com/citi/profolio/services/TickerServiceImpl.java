@@ -19,7 +19,7 @@ public class TickerServiceImpl implements TickerService{
     @Autowired
     TickerDao tickerDao;
 
-    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(TickerServiceImpl.class);
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -32,6 +32,7 @@ public class TickerServiceImpl implements TickerService{
     @Transactional
     @Override
     public Collection<Ticker> selectTickers() {
+        logger.info("Selecting tickers");
         return tickerDao.findAll();
     }
 }

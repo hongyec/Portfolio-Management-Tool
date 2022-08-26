@@ -17,6 +17,8 @@ import java.util.Collection;
 @RequestMapping("/orders")
 @CrossOrigin
 public class OrderController {
+
+
     @Autowired
     OrderService orderService;
 
@@ -29,7 +31,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public Order createOrder(@RequestBody Order order) {
+        logger.info("Creating order"+order.toString());
         Order resp = orderService.createOrder(order);
         return (resp == null) ? new ResponseEntity<>(resp, HttpStatus.NOT_ACCEPTABLE)
                 : new ResponseEntity<>(resp, HttpStatus.OK);

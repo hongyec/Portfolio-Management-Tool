@@ -90,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
         order.setGoodTill(cal.getTime());
     }
     private boolean orderCanComplete(Order order){
+        logger.info(order.toString());
         Ticker ticker = tickerService.selectTickerById(order.getTickerId());
         String action = order.getAction();
         if (action.equals(ActionEnum.BUY.getAction())){
