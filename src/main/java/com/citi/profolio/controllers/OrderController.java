@@ -31,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         logger.info("Creating order"+order.toString());
         Order resp = orderService.createOrder(order);
         return (resp == null) ? new ResponseEntity<>(resp, HttpStatus.NOT_ACCEPTABLE)
