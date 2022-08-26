@@ -6,6 +6,8 @@ import com.citi.profolio.services.OrderService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,26 +25,37 @@ public class OrderController {
     private static final Logger logger = LogManager.getLogger(OrderController.class);
 
     @GetMapping
-    public Collection<Order> selectOrder() {
-        return orderService.selectOrder();
+    public ResponseEntity<Collection<Order>> selectOrder() {
+
+        return new ResponseEntity<>(orderService.selectOrder(), HttpStatus.OK);
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         logger.info("Creating order"+order.toString());
-        return orderService.createOrder(order);
+        Order resp = orderService.createOrder(order);
+        return (resp == null) ? new ResponseEntity<>(resp, HttpStatus.NOT_ACCEPTABLE)
+                : new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @GetMapping(value="/{id}")
-    public Order selectOrderById(@PathVariable("id") Integer id) {
-        return orderService.selectOrderById(id);
+    public ResponseEntity<Order> selectOrderById(@PathVariable("id") Integer id) {
+        Order resp =  orderService.selectOrderById(id);
+        return (resp == null) ? new ResponseEntity<>(resp, HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @GetMapping(value = "?status={status}")
-    public Collection<Order> selectOrdersByStatus(@PathVariable("status") String status) {
-        return orderService.selectOrderByStatus(status);
+    @GetMapping(value = "/status={status}")
+    public ResponseEntity<Collection<Order>> selectOrdersByStatus(@PathVariable("status") String status) {
+        if (StatusEnum.valueOfStatus(status) == null){
+            logger.warn("Invalid Status");
+            return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(orderService.selectOrderByStatus(status), HttpStatus.OK);
     }
 
     @GetMapping(value="/updateStatus")
-    public Collection<Order> updateOrderStatus(){return orderService.updateOrderStatus();}
+    public ResponseEntity<Collection<Order>> updateOrderStatus(){
+        return new ResponseEntity<>(orderService.updateOrderStatus(), HttpStatus.OK);
+    }
 }

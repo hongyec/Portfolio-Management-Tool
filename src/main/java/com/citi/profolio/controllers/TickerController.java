@@ -4,6 +4,8 @@ package com.citi.profolio.controllers;
 import com.citi.profolio.entities.Ticker;
 import com.citi.profolio.services.TickerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -16,12 +18,14 @@ public class TickerController {
     TickerService tickerService;
 
     @GetMapping(value = "/{id}")
-    public Ticker selectTickerById(@PathVariable Integer id) {
-        return tickerService.selectTickerById(id);
+    public ResponseEntity<Ticker> selectTickerById(@PathVariable Integer id) {
+        Ticker resp = tickerService.selectTickerById(id);
+        return (resp == null) ? new ResponseEntity<>(resp, HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @GetMapping
-    public Collection<Ticker> selectTickers() {
-        return tickerService.selectTickers();
+    public ResponseEntity<Collection<Ticker>> selectTickers() {
+        return new ResponseEntity<>(tickerService.selectTickers(), HttpStatus.OK);
     }
 }

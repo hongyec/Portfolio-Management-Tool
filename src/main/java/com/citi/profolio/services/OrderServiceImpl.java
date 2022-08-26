@@ -50,8 +50,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(propagation = Propagation.REQUIRED)
     public Order createOrder(Order order){
 
-        //Check if the order and the ticker exist,
-        if (order == null || tickerService.selectTickerById(order.getTickerId()) == null) return null;
+        //Check whether the request body is valid.
+        if (order == null || order.getTickerId() == null || order.getNumShare() == null) return null;
+
+        //Check whether the ticket exists.
+        if (tickerService.selectTickerById(order.getTickerId()) == null) return null;
 
         Double balance = userService.getUserBalance();
         Double totalPrice = order.getNumShare() * order.getMarketPrice();
